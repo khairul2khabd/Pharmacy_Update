@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.pharmacy.model"> 
+       
+    <class name="PhaSaleReturn" table="inv_pha_sale_return">
+        <id name="returnId" type="int" column="return_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="returnAmount" column="return_amount" />     
+        <property name="netAmount" column="net_return" />     
+        <property name="dueAdjust" column="due_adjust" />     
+        <property name="creator" column="creator" />  
+        <property name="createdDate" column="created_date" />     
+        
+        <many-to-one name="phaSale" column="sale_invoice_id" class="org.openmrs.module.pharmacy.model.PhaSale"
+                     lazy="false" foreign-key="fk_sale_invoice_id_return" />
+        
+        <set name="detailses" table="inv_pha_sale_return_details"
+             cascade="save-update,merge,evict" lazy="false">
+            <key column="return_id" />
+            <one-to-many  class="org.openmrs.module.pharmacy.model.PhaSaleReturnDetails" />
+        </set>
+    </class>
+    
+    <class name="PhaSaleReturnDetails" table="inv_pha_sale_return_details">
+        <id name="returnDetId" type="int" column="return_detail_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="quantity" column="quantity" />     
+        <property name="unitPrice" column="unit_price" />     
+        <property name="returnAmount" column="return_amount" />     
+           
+        <many-to-one name="phaSaleReturn" column="return_id" class="org.openmrs.module.pharmacy.model.PhaSaleReturn"
+                     lazy="false" foreign-key="fk_return_details_return_id" />
+        <many-to-one name="phaItem" column="item_id" class="org.openmrs.module.pharmacy.model.PhaItem"
+                     lazy="false" foreign-key="fk_return_details_item_id" />
+        <many-to-one name="itemPrice" column="item_price_id" class="org.openmrs.module.pharmacy.model.PhaItemPrice"
+                     lazy="false" foreign-key="fk_return_details_item_price_id" />
+    </class>
+    
+</hibernate-mapping>

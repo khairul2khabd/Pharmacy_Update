@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.pharmacy.model"> 
+    
+    <class name="PhaSaleVoided" table="inv_pha_sale_voided">
+        <id name="voidedId" type="int" column="voided_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="voidedDate" column="voided_date" />     
+        <property name="voidedDescription" column="voided_description" />     
+        <property name="saleInvoiceId" column="sale_invoice_id" />    
+        <property name="voidedBy" column="voided_by" />    
+    </class>
+    
+    <class name="PhaSale" table="inv_pha_sale">
+        <id name="saleInvoiceId" type="int" column="sale_invoice_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="bankName" column="bank_name" />     
+        <property name="cardNo" column="card_no" />     
+        <property name="contactInfo" column="contact_info" />     
+        <property name="createdDate" column="created_date" />     
+        <property name="customer" column="customer" />     
+        <property name="customerId" column="customer_id" />     
+        <property name="discountAmount" column="discount_amount" />     
+        <property name="discountPercentage" column="discount_percentage" />     
+        <property name="dueAmount" column="due_amount" />     
+        <property name="mobileNo" column="mobile_no" />     
+        <property name="netAmount" column="net_amount" />     
+        <property name="paid" column="paid" />     
+        <property name="paidStaus" column="paid_staus" />     
+        <property name="paymentMethod" column="payment_method" />     
+        <property name="totalAmount" column="total_amount" />     
+        <property name="transNo" column="trans_no" />     
+        <property name="voided" column="voided" />  
+        <property name="creator" column="creator" />  
+        
+        <many-to-one name="voidedId" column="voided_id" class="org.openmrs.module.pharmacy.model.PhaSaleVoided"
+                     lazy="false" foreign-key="fk_sale_invoice_voided" />
+        
+        <!--        <set name="billItems" table="dia_billing_patient_service_bill_item"
+             cascade="save-update,merge,evict" lazy="false">
+            <key column="bill_id" />
+            <one-to-many	class="org.openmrs.module.hospitalcore.model.DiaPatientServiceBillItem" />
+        </set>    -->
+    </class>
+     
+    <class name="PhaSaleCollect" table="inv_pha_sale_collect">
+        <id name="saleCollectId" type="int" column="sale_invoice_collect_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="collectedDate" column="collected_date" />     
+        <property name="dupPaid" column="due_paid" />     
+        <property name="paidAmount" column="paid_amount" />     
+        <property name="status" column="status" />     
+        <many-to-one name="phaSale" column="sale_invoice_id" class="org.openmrs.module.pharmacy.model.PhaSale"
+                     lazy="false" foreign-key="fk_sale_invoice_id_collect" />
+       
+        <property name="creator" column="creator" />  
+    </class>
+    
+    <class name="PhaSaleDetails" table="inv_pha_sale_details">
+        <id name="saleDetId" type="int" column="sale_invoice_details_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="Quantity" column="quantity" />     
+        <property name="discountAmount" column="discount_amount" />     
+        <property name="totalAmount" column="total_amount" />     
+        <property name="unitPrice" column="unit_price" />   
+        <many-to-one name="phaSale" column="sale_invoice_id" class="org.openmrs.module.pharmacy.model.PhaSale"
+                     lazy="false" foreign-key="fk_sale_invoice_id_details" />
+        <many-to-one name="phaItem" column="item_id" class="org.openmrs.module.pharmacy.model.PhaItem"
+                     lazy="false" foreign-key="fk_item_id_details" />
+        <many-to-one name="itemPrice" column="item_price_id" class="org.openmrs.module.pharmacy.model.PhaItemPrice"
+                     lazy="false" foreign-key="fk_item_id_details" />
+    </class>
+    
+</hibernate-mapping>

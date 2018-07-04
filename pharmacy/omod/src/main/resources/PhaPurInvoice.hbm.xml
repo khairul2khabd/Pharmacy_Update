@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.pharmacy.model">
+     
+    <class name="PhaPurInvoice" table="inv_pha_invoice">
+        <id name="phaInvId" type="int" column="inv_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="supplierName" column="supplier_name" />     
+        <property name="invoiceNo" column="inv_no" />   
+        <property name="invoiceDate" column="invoice_date" />
+        <property name="tradePrice" column="trade_price" />
+        <property name="discount" column="discount" />
+        <property name="vat" column="vat" />     
+        <property name="othDiscount" column="oth_discount" />     
+        <property name="invoiceAmount" column="invoice_amount" />  
+        <property name="creator" column="creator" />   
+        <property name="createdDate" column="created_date" />   
+        <property name="purcStatus" column="purc_status" />     
+        <property name="status" column="status" />  
+        
+<!--        <set name="billItems" table="dia_billing_patient_service_bill_item"
+             cascade="save-update,merge,evict" lazy="false">
+            <key column="bill_id" />
+            <one-to-many	class="org.openmrs.module.hospitalcore.model.DiaPatientServiceBillItem" />
+        </set>      -->
+           
+    </class>
+      
+</hibernate-mapping>

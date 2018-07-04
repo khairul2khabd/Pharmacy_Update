@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.pharmacy.model">
+    <class name="PhaItemCategory" table="inv_pha_category">
+        <id name="categoryId" type="int" column="category_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="category" column="category" />     
+        <property name="typeId" column="type_id" />     
+    </class>
+     
+    <class name="PhaItem" table="inv_pha_item">
+        <id name="itemId" type="int" column="item_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="itemName" column="item_name" />     
+        <property name="shortId" column="short_id" />   
+        <property name="itemCategory" column="item_category" />
+        <property name="manufacture" column="manufacture" />
+        <property name="shelf" column="shelf" />
+        <property name="genericName" column="generic_name" />     
+        <property name="stockMinLvl" column="stock_min_lvl" />     
+        <property name="stockMaxLvl" column="stock_max_lvl" />     
+        <property name="categoryId" column="category_id" />     
+        <property name="medicineFor" column="med_for" />     
+        <property name="description" column="description" />     
+        <property name="createdDate" column="created_date" />     
+        <property name="creator" column="creator" />     
+    </class>
+     
+    
+    <class name="PhaSupplier" table="inv_pha_supplier">
+        <id name="supId" type="int" column="sup_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="supplierName" column="supplier_name" />     
+        <property name="phoneNo" column="phone_no" />     
+        <property name="address" column="address" />     
+        <property name="createdDate" column="created_date" />     
+        <property name="creator" column="creator" />     
+        <property name="email" column="email" />  
+        <property name="desc" column="description" />   
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.pharmacy.model">
+    
+    <class name="PhaItemPrice" table="inv_pha_item_price">
+        <id name="id" type="int" column="id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="qty" column="qty" /> 
+        <property name="batch" column="batch" />     
+        <property name="free" column="free" />     
+        <property name="unitTp" column="unit_tp" />   
+        <property name="mrp" column="mrp" />   
+        <property name="salesPrice" column="sales_price" />   
+        <property name="eachPrice" column="each_price" />   
+        <property name="expireDate" column="expire_date" />   
+        <property name="status" column="status" /> 
+        
+        <many-to-one name="phaInvId" column="inv_id" 
+                     class="org.openmrs.module.pharmacy.model.PhaPurInvoice" lazy="false" 
+                     foreign-key="fk_inv_pha_item_price_inv_id" />
+          
+        <many-to-one name="item" column="item" 
+                     class="org.openmrs.module.pharmacy.model.PhaItem" lazy="false" 
+                     foreign-key="fk_inv_item_price_item_id" />    
+    </class>
+      
+</hibernate-mapping>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqldiff PUBLIC "-//OpenMRS//DTD OpenMRS SQL Diff Config 1.0//EN" "http://resources.openmrs.org/doctype/sqldiff-1.0.dtd">
+
+<sqldiff version="1.0">
+    <help>
+        USE:
+        The diffs are ordered by data model version number.
+        The script can be run in a top down fashion and is
+        expected to not fail or overwrite old data
+		
+        EXPECT:
+        - "use business-database-name;" was called prior to
+        calling this script
+    </help>
+
+    <!-- *********************** Pharmacy **************************-->
+    <diff>
+        <version>1.1.1</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>07 Nov 2017</date>
+        <description>Inventory Pharmacy Lookup value</description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_category` (
+            `category_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `category` VARCHAR(255) DEFAULT NULL,
+            `type_id` INT(11) DEFAULT NULL,
+            PRIMARY KEY (`category_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.1.2</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>07 Nov 2017</date>
+        <description>Inventory Pharmacy Item</description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_item` (
+            `item_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `item_name` VARCHAR(255) DEFAULT NULL,
+            `short_id` VARCHAR(50) DEFAULT NULL,
+            `item_category` VARCHAR(200) DEFAULT NULL,
+            `manufacture` VARCHAR(200) DEFAULT NULL,
+            `shelf` VARCHAR(50) DEFAULT NULL,
+            `generic_name` VARCHAR(255) DEFAULT NULL,
+            `stock_min_lvl` INT(11) DEFAULT NULL,
+            `stock_max_lvl` INT(11) DEFAULT NULL,
+            `category_id` INT(11) DEFAULT NULL,
+            `med_for` VARCHAR(200) DEFAULT NULL,
+            `description` VARCHAR(200) DEFAULT NULL,
+            `created_date` DATETIME DEFAULT NULL,
+            `creator` INT(11) DEFAULT NULL,
+            PRIMARY KEY (`item_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.1.3</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>07 Nov 2017</date>
+        <description>Inventory Pharmacy Supplier</description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_supplier` (
+            `sup_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `supplier_name` VARCHAR(255) DEFAULT NULL,
+            `phone_no` VARCHAR(50) DEFAULT NULL,
+            `address` VARCHAR(255) DEFAULT NULL,
+            `created_date` DATETIME DEFAULT NULL,
+            `creator` INT(11) DEFAULT NULL,
+            `email` VARCHAR(255) DEFAULT NULL,
+            `description` VARCHAR(255) DEFAULT NULL,
+            PRIMARY KEY (`sup_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+     
+    <diff>
+        <version>1.1.5</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>07 Nov 2017</date>
+        <description>Inventory Pharmacy Purchase item</description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_invoice` (
+            `inv_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `supplier_name` VARCHAR(255) DEFAULT NULL,
+            `inv_no` VARCHAR(50) DEFAULT NULL,
+            `invoice_date` DATE DEFAULT NULL,
+            `trade_price` DECIMAL(19,2) DEFAULT NULL,
+            `discount` DECIMAL(19,2) DEFAULT NULL,
+            `vat` DECIMAL(19,2) DEFAULT NULL,
+            `oth_discount` DECIMAL(19,2) DEFAULT NULL,
+            `invoice_amount` DECIMAL(19,2) DEFAULT NULL,
+            `creator` INT(11) DEFAULT NULL,
+            `created_date` DATETIME DEFAULT NULL,
+            `purc_status` VARCHAR(50) DEFAULT NULL,
+            `status` INT(11) DEFAULT NULL,
+            PRIMARY KEY (`inv_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.1.6</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>10 Jan 2018</date>
+        <description>Inventory Pharmacy Purchase details </description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_invoice_details` (
+            `inv_det_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `inv_id` INT(11) NOT NULL,
+            `item_name` VARCHAR(255) DEFAULT NULL,
+            `item_id` INT(11) NOT NULL,
+            `batch` VARCHAR(50) DEFAULT NULL,
+            `pack` DECIMAL(19,2) DEFAULT NULL,
+            `size` DECIMAL(19,2) DEFAULT NULL,
+            `qty` DECIMAL(19,2) DEFAULT NULL,
+            `unit_tp` DECIMAL(19,2) DEFAULT NULL,
+            `total_tp` DECIMAL(19,2) DEFAULT NULL,
+            `vat_per` DECIMAL(19,2) DEFAULT NULL,
+            `vat_amount` DECIMAL(19,2) DEFAULT NULL,
+            `discount_per` DECIMAL(19,2) DEFAULT NULL,
+            `discount_amount` DECIMAL(19,2) DEFAULT NULL,
+            `net_amount` DECIMAL(19,2) DEFAULT NULL,
+            PRIMARY KEY (`inv_det_id`),
+            KEY `fk_inv_pur_det_inv_id` (`inv_id`),
+            KEY `fk_inv_pur_det_item_id` (`item_id`),
+            CONSTRAINT `fk_inv_pur_det_inv_id` FOREIGN KEY (`inv_id`) REFERENCES `inv_pha_invoice` (`inv_id`),
+            CONSTRAINT `fk_inv_pur_det_item_id` FOREIGN KEY (`item_id`) REFERENCES `inv_pha_item` (`item_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.1.7</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>23 Jan 2018</date>
+        <description>Inventory Pharmacy Item price </description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_item_price` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `inv_id` INT(11) NOT NULL,
+            `item` INT(11) NOT NULL,
+            `batch` VARCHAR(255) DEFAULT NULL,
+            `qty` DECIMAL(19,2) DEFAULT NULL,
+            `free` DECIMAL(19,2) DEFAULT NULL,
+            `unit_tp` DECIMAL(19,2) DEFAULT NULL,
+            `mrp` DECIMAL(19,2) DEFAULT NULL,
+            `sales_price` DECIMAL(19,2) DEFAULT NULL,
+            `expire_date` DATE DEFAULT NULL,
+            `status` INT(11) DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            KEY `fk_inv_pha_item_price_inv_id` (`inv_id`),
+            KEY `fk_inv_item_price_item_id` (`item`),
+            CONSTRAINT `fk_inv_pha_item_price_inv_id` FOREIGN KEY (`inv_id`) REFERENCES `inv_pha_invoice` (`inv_id`),
+            CONSTRAINT `fk_inv_item_price_item_id` FOREIGN KEY (`item`) REFERENCES `inv_pha_item` (`item_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.1.7.1</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>05 Feb 2018</date>
+        <description>Inventory Pharmacy voided details </description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_sale_voided` (
+            `voided_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `voided_by` INT(11) NOT NULL,
+            `voided_date` DATETIME DEFAULT NULL,
+            `voided_description` VARCHAR(255) DEFAULT NULL,
+            `sale_invoice_id` INT(11) DEFAULT NULL,
+            PRIMARY KEY (`voided_id`)
+            ) ENGINE=INNODB  DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.1.8</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>05 Feb 2018</date>
+        <description>Inventory Pharmacy Sales invoice </description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_sale` (
+            `sale_invoice_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `bank_name` VARCHAR(255) DEFAULT NULL,
+            `card_no` VARCHAR(255) DEFAULT NULL,
+            `contact_info` VARCHAR(255) DEFAULT NULL,
+            `created_date` DATETIME DEFAULT NULL,
+            `customer` VARCHAR(255) DEFAULT NULL,
+            `customer_id` INT(11) DEFAULT NULL,
+            `discount_amount` DOUBLE NOT NULL,
+            `discount_percentage` DOUBLE NOT NULL,
+            `due_amount` DOUBLE NOT NULL,
+            `mobile_no` VARCHAR(255) DEFAULT NULL,
+            `net_amount` DOUBLE NOT NULL,
+            `paid` DOUBLE NOT NULL,
+            `paid_staus` VARCHAR(255) DEFAULT NULL,
+            `payment_method` VARCHAR(255) NOT NULL,
+            `total_amount` DOUBLE NOT NULL,
+            `trans_no` VARCHAR(255) DEFAULT NULL,
+            `creator` INT(11) NOT NULL,
+            `voided` BIT(1) DEFAULT NULL,
+            `voided_id` INT(11) DEFAULT NULL,
+            PRIMARY KEY (`sale_invoice_id`),
+            KEY `fk_sale_invoice_voided` (`voided_id`),
+            CONSTRAINT `fk_sale_invoice_voided` FOREIGN KEY (`voided_id`) REFERENCES `inv_pha_sale_voided` (`voided_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.1.9</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>05 Feb 2018</date>
+        <description>Inventory Pharmacy Sales invoice collect</description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_sale_collect` (
+            `sale_invoice_collect_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `collected_date` DATETIME DEFAULT NULL,
+            `due_paid` INT(11) DEFAULT NULL,
+            `paid_amount` DOUBLE NOT NULL,
+            `status` INT(11) NOT NULL,
+            `creator` INT(11) NOT NULL,
+            `sale_invoice_id` INT(11) NOT NULL,
+            PRIMARY KEY (`sale_invoice_collect_id`),
+            KEY `fk_sale_invoice_id_collect` (`sale_invoice_id`),
+            KEY `fk_sale_invoice_collect_creator` (`creator`),
+            CONSTRAINT `fk_sale_invoice_collect_creator` FOREIGN KEY (`creator`) REFERENCES `users` (`user_id`),
+            CONSTRAINT `fk_sale_invoice_id_collect` FOREIGN KEY (`sale_invoice_id`) REFERENCES `inv_pha_sale` (`sale_invoice_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.2.0</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>05 Feb 2018</date>
+        <description>Inventory Pharmacy Sales invoice details </description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_sale_details` (
+            `sale_invoice_details_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `quantity` DOUBLE NOT NULL,
+            `discount_amount` DOUBLE NOT NULL,
+            `total_amount` DOUBLE NOT NULL,
+            `unit_price` DOUBLE NOT NULL,
+            `item_id` INT(11) NOT NULL,
+            `sale_invoice_id` INT(11) NOT NULL,
+            `item_price_id` INT(11) NOT NULL,
+            PRIMARY KEY (`sale_invoice_details_id`),
+            KEY `fk_sale_invoice_id_details` (`sale_invoice_id`),
+            KEY `fk_item_id_details` (`item_id`),
+            KEY `fk_item_price_id_details` (`item_price_id`),
+            CONSTRAINT `fk_item_id_details` FOREIGN KEY (`item_id`) REFERENCES `inv_pha_item` (`item_id`),
+            CONSTRAINT `fk_sale_invoice_id_details` FOREIGN KEY (`sale_invoice_id`) REFERENCES `inv_pha_sale` (`sale_invoice_id`),
+            CONSTRAINT `fk_item_price_id_details` FOREIGN KEY (`item_price_id`) REFERENCES `inv_pha_item_price` (`id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.2.1</version>
+        <author>Md Khairul Islam</author>
+        <date>20 Feb 2018</date>
+        <description>
+            Add column of `inv_pha_item_price` for specific specimen
+        </description>
+        <sql>
+            ALTER TABLE `inv_pha_item_price`
+            ADD column ( `each_price` DECIMAL(19,2) DEFAULT NULL );
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.2.2</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>29 June 2018</date>
+        <description>Inventory Pharmacy Sales return </description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_sale_return` (
+            `return_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `sale_invoice_id` INT(11) NOT NULL,
+            `return_amount` DOUBLE DEFAULT NULL,
+            `net_return` DOUBLE DEFAULT NULL,
+            `due_adjust` DOUBLE DEFAULT NULL,
+            `creator` INT(11) DEFAULT NULL,
+            `created_date` DATETIME DEFAULT NULL,
+            PRIMARY KEY (`return_id`),
+            KEY `fk_sale_invoice_id_return` (`sale_invoice_id`),
+            CONSTRAINT `fk_sale_invoice_id_return` FOREIGN KEY (`sale_invoice_id`) REFERENCES `inv_pha_sale` (`sale_invoice_id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+    
+    <diff>
+        <version>1.2.3</version>
+        <author>Md. Khaiurl Islam</author>
+        <date>29 June 2018</date>
+        <description>Inventory Pharmacy Sales return details </description>
+        <sql>
+            CREATE TABLE IF NOT EXISTS `inv_pha_sale_return_details` (
+            `return_detail_id` INT(11) NOT NULL AUTO_INCREMENT,
+            `return_id` INT(11) NOT NULL,
+            `quantity` DOUBLE NOT NULL,
+            `unit_price` DOUBLE DEFAULT NULL,
+            `return_amount` DOUBLE DEFAULT NULL,
+            `item_id` INT(11) DEFAULT NULL,
+            `item_price_id` INT(11) DEFAULT NULL, 
+            PRIMARY KEY (`return_detail_id`),
+            KEY `fk_return_details_return_id` (`return_id`),
+            KEY `fk_return_details_item_id` (`item_id`),
+            KEY `fk_return_details_item_price_id` (`item_price_id`),
+            CONSTRAINT `fk_return_details_return_id` FOREIGN KEY (`return_id`) REFERENCES `inv_pha_sale_return` (`return_id`),
+            CONSTRAINT `fk_return_details_item_id` FOREIGN KEY (`item_id`) REFERENCES `inv_pha_item` (`item_id`),
+            CONSTRAINT `fk_return_details_item_price_id` FOREIGN KEY (`item_price_id`) REFERENCES `inv_pha_item_price` (`id`)
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8
+        </sql>
+    </diff>
+     
+     
+</sqldiff>

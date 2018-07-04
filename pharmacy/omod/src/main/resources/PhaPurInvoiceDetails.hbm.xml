@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.pharmacy.model">
+    
+    <class name="PhaPurInvoiceDetails" table="inv_pha_invoice_details">
+        <id name="id" type="int" column="inv_det_id"
+            unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="itemName" column="item_name" />     
+        <property name="batch" column="batch" />   
+        <property name="pack" column="pack" />
+        <property name="size" column="size" />
+        <property name="qty" column="qty" />
+        <property name="unitTP" column="unit_tp" />     
+        <property name="totalAmount" column="total_tp" />     
+        <property name="vat" column="vat_per" />     
+        <property name="vatAmount" column="vat_amount" />       
+        <property name="discount" column="discount_per" />     
+        <property name="discountAmount" column="discount_amount" />     
+        <property name="netAmount" column="net_amount" /> 
+        
+        <many-to-one name="phaInvId" column="inv_id" 
+                     class="org.openmrs.module.pharmacy.model.PhaPurInvoice" lazy="false" 
+                     foreign-key="fk_inv_pur_det_inv_id" />
+        
+        <many-to-one name="item" column="item_id" 
+                     class="org.openmrs.module.pharmacy.model.PhaItem" lazy="false" 
+                     foreign-key="fk_inv_pur_det_item_id" />    
+          
+    </class>
+      
+</hibernate-mapping>
