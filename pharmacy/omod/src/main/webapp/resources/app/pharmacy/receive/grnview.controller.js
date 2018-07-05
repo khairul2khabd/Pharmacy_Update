@@ -34,13 +34,26 @@ angular.module('inventoryApp').controller('GrnViewController', ['$scope', '$filt
 
         // Function call
         _getPhuInvoice(purInvId);
-        _getListPhaItemPrice(purInvId);
-        _getPhuInvoiceDetailsById(purInvId);
+        // _getListPhaItemPrice(purInvId);
+        // _getPhuInvoiceDetailsById(purInvId);
 
         function _getPhuInvoice(purInvId) {
             $http.get(getContextPath() + '/module/pharmacy/getpurinvoice.htm?purInvId=' + purInvId).success(function(response) {
                 self.PurInvoiceModel = response;
-                //console.log(response);
+                console.log(response.detailses);
+
+                self.PurInvoiceDet = response.detailses;
+                for (var i = 0; i < self.PurInvoiceDet.length; i++) {
+                    for (var k = 0; k < self.PhaItemPriceList.length; k++) {
+                        if (self.PurInvoiceDet[i].item.itemId === self.PhaItemPriceList[k].item.itemId) {
+                            self.PurInvoiceDet[i].mrp = self.PhaItemPriceList[k].mrp;
+                            self.PurInvoiceDet[i].salesPrice = self.PhaItemPriceList[k].salesPrice;
+                            self.PurInvoiceDet[i].free = self.PhaItemPriceList[k].free;
+                            self.PurInvoiceDet[i].netQty = self.PhaItemPriceList[k].qty;
+                        }
+                    }
+                }
+
             }).error(function(data, status, headers) {
                 console.log(status);
             });

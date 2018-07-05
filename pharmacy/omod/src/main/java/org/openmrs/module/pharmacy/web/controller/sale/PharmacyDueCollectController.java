@@ -81,11 +81,10 @@ public class PharmacyDueCollectController {
                 phaSale.setNetAmount(net);
                 phaSale.setDueAmount(dcm.getNetDue());
                 phaSale.setPaidStaus(paidStatus);
-                
+
 //                if(dcm.getDuePaid()>0){
 //                    Integer ars[]=[1,2];
 //                }
-
                 collect = new PhaSaleCollect();
                 collect.setPaidAmount(dcm.getRetAmount());
                 collect.setPhaSale(phaSale);
@@ -111,7 +110,8 @@ public class PharmacyDueCollectController {
 
                     PhaItem item = ps.getPhaItemById(dtm.getItemId());
                     PhaItemPrice phaItemPrice = ps.getPhaItemPriceById(dtm.getItemPriceId());
-                    phaItemPrice.setQty(phaItemPrice.getQty().add(new BigDecimal(dtm.getQuantity())));
+//                    phaItemPrice.setQty(phaItemPrice.getQty().add(new BigDecimal(dtm.getQuantity())));
+                    phaItemPrice.setQty(phaItemPrice.getQty() + dtm.getQuantity());
 
                     PhaSaleReturnDetails details = new PhaSaleReturnDetails();
                     details.setPhaSaleReturn(phaSaleReturn);

@@ -201,14 +201,13 @@ angular.module('inventoryApp').controller('GoodsReceiceController', ['$scope', '
         };
 
         $scope.savePurchase = function(gr) {
-            // console.log(gr);
-            // var dd = $("#invoiceDate").val();
-            // encodeURI(JSON.stringify($scope.purItemList));
-            var jsonList = encodeURIComponent(JSON.stringify($scope.purItemList));
-            //console.log($scope.purItemList);
+
+            //var jsonList = encodeURIComponent(JSON.stringify($scope.purItemList));
 
             $scope.tempModel = {phaInvId: null, supplierName: gr.supplierName, invoiceNo: gr.invoiceNo, invoiceDate: gr.invoiceDate,
-                tradePrice: $scope.tradePrice, discount: $scope.totDisAmount, vat: $scope.totVatAmount, othDiscount: 0, invoiceAmount: $scope.totNetAmount, purcStatus: gr.purStatus};
+                tradePrice: $scope.tradePrice, discount: $scope.totDisAmount,
+                vat: $scope.totVatAmount, othDiscount: 0, invoiceAmount: $scope.totNetAmount,
+                purcStatus: gr.purStatus, detailses: $scope.purItemList};
 
             if (gr.supplierName === "" || gr.invoiceNo === "" || gr.invoiceDate === "") {
                 self.error = 'Please fill up mandatory field !!!!!!!!!!';
@@ -218,7 +217,7 @@ angular.module('inventoryApp').controller('GoodsReceiceController', ['$scope', '
                 self.error = 'Please input mandatory field !!!!!!!!!!';
                 return false;
             }
-            $http.post(getContextPath() + '/module/pharmacy/savePurchaseInv.htm?jsonList=' + jsonList, $scope.tempModel).success(function(d) {
+            $http.post(getContextPath() + '/module/pharmacy/savePurchaseInv.htm', $scope.tempModel).success(function(d) {
                 $scope.grnView(d.phaInvId);
             }).error(function(data, status, headers) {
                 console.log(headers);

@@ -6,6 +6,7 @@
 package org.openmrs.module.pharmacy.web.controller.phurchase.invoice;
 
 import java.util.List;
+import java.util.ArrayList;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.pharmacy.api.PharmacyService;
 import org.springframework.stereotype.Controller;
@@ -22,13 +23,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class PharmacyItemPriceController {
 
-   
     @RequestMapping(value = "/module/pharmacy/getListPhaItemPrice.htm", method = RequestMethod.GET)
     public @ResponseBody
     List<PhaItemPrice> getListPhaItemPrice() {
         PharmacyService ps = Context.getService(PharmacyService.class);
         List<PhaItemPrice> itemPriceList = ps.listPhaItemPrice();
-        return itemPriceList;
+        List<PhaItemPrice> list = new ArrayList<PhaItemPrice>();
+        for (PhaItemPrice p : itemPriceList) {
+            PhaItemPrice itm = new PhaItemPrice();
+            itm = p;
+            itm.setPhaInvId(null);
+            list.add(itm);
+        }
+        return list;
     }
 
     @RequestMapping(value = "/module/pharmacy/getListPhaItemPriceByInvId.htm", method = RequestMethod.GET)
@@ -36,8 +43,14 @@ public class PharmacyItemPriceController {
     List<PhaItemPrice> getListPhaItemPriceByInvId(@RequestParam(value = "purInvId", required = false) Integer purInvId) {
         PharmacyService ps = Context.getService(PharmacyService.class);
         List<PhaItemPrice> itemPriceList = ps.listPhaItemPriceByInvId(purInvId);
-        return itemPriceList;
+        List<PhaItemPrice> list = new ArrayList<PhaItemPrice>();
+        for (PhaItemPrice p : itemPriceList) {
+            PhaItemPrice itm = new PhaItemPrice();
+            itm = p;
+            itm.setPhaInvId(null);
+            list.add(itm);
+        }
+        return list;
     }
 
-    
 }

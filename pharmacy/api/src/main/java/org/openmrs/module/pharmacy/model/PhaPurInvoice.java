@@ -6,8 +6,8 @@
 package org.openmrs.module.pharmacy.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -20,34 +20,51 @@ public class PhaPurInvoice implements Serializable {
     private String supplierName;
     private String invoiceNo;
     private Date invoiceDate;
-    private BigDecimal tradePrice;
-    private BigDecimal discount;
-    private BigDecimal vat;
-    private BigDecimal othDiscount;
-    private BigDecimal invoiceAmount; // Net amount
+    private Double tradePrice;
+    private Double discount;
+    private Double vat;
+    private Double othDiscount;
+    private Double invoiceAmount; // Net amount
     private Integer creator;
     private Date createdDate;
     private String purcStatus;
     private Integer status;
 
+    private Set<PhaPurInvoiceDetails> detailses;
+
+    public void addDetails(PhaPurInvoiceDetails details) {
+        if (detailses == null) {
+            detailses = new HashSet<PhaPurInvoiceDetails>();
+        }
+        detailses.add(details);
+    }
+
+    public Set<PhaPurInvoiceDetails> getDetailses() {
+        return detailses;
+    }
+
+    public void setDetailses(Set<PhaPurInvoiceDetails> detailses) {
+        this.detailses = detailses;
+    }
+
     public PhaPurInvoice() {
 
     }
 
-    public PhaPurInvoice(Integer phaInvId, String supplierName, String invoiceNo, Date invoiceDate, BigDecimal tradePrice, BigDecimal discount, BigDecimal vat, BigDecimal othDiscount, BigDecimal invoiceAmount, Integer creator, String purcStatus, Integer status) {
-        this.phaInvId = phaInvId;
-        this.supplierName = supplierName;
-        this.invoiceNo = invoiceNo;
-        this.invoiceDate = invoiceDate;
-        this.tradePrice = tradePrice;
-        this.discount = discount;
-        this.vat = vat;
-        this.othDiscount = othDiscount;
-        this.invoiceAmount = invoiceAmount;
-        this.creator = creator;
-        this.purcStatus = purcStatus;
-        this.status = status;
-    }
+//    public PhaPurInvoice(Integer phaInvId, String supplierName, String invoiceNo, Date invoiceDate, BigDecimal tradePrice, BigDecimal discount, BigDecimal vat, BigDecimal othDiscount, BigDecimal invoiceAmount, Integer creator, String purcStatus, Integer status) {
+//        this.phaInvId = phaInvId;
+//        this.supplierName = supplierName;
+//        this.invoiceNo = invoiceNo;
+//        this.invoiceDate = invoiceDate;
+//        this.tradePrice = tradePrice;
+//        this.discount = discount;
+//        this.vat = vat;
+//        this.othDiscount = othDiscount;
+//        this.invoiceAmount = invoiceAmount;
+//        this.creator = creator;
+//        this.purcStatus = purcStatus;
+//        this.status = status;
+//    }
 
     public Integer getPhaInvId() {
         return phaInvId;
@@ -81,43 +98,43 @@ public class PhaPurInvoice implements Serializable {
         this.invoiceDate = invoiceDate;
     }
 
-    public BigDecimal getTradePrice() {
+    public Double getTradePrice() {
         return tradePrice;
     }
 
-    public void setTradePrice(BigDecimal tradePrice) {
+    public void setTradePrice(Double tradePrice) {
         this.tradePrice = tradePrice;
     }
 
-    public BigDecimal getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(BigDecimal discount) {
+    public void setDiscount(Double discount) {
         this.discount = discount;
     }
 
-    public BigDecimal getVat() {
+    public Double getVat() {
         return vat;
     }
 
-    public void setVat(BigDecimal vat) {
+    public void setVat(Double vat) {
         this.vat = vat;
     }
 
-    public BigDecimal getOthDiscount() {
+    public Double getOthDiscount() {
         return othDiscount;
     }
 
-    public void setOthDiscount(BigDecimal othDiscount) {
+    public void setOthDiscount(Double othDiscount) {
         this.othDiscount = othDiscount;
     }
 
-    public BigDecimal getInvoiceAmount() {
+    public Double getInvoiceAmount() {
         return invoiceAmount;
     }
 
-    public void setInvoiceAmount(BigDecimal invoiceAmount) {
+    public void setInvoiceAmount(Double invoiceAmount) {
         this.invoiceAmount = invoiceAmount;
     }
 
@@ -155,6 +172,14 @@ public class PhaPurInvoice implements Serializable {
 
     @Override
     public String toString() {
-        return "PhaPurInvoice{" + "phaInvId=" + phaInvId + ", supplierName=" + supplierName + ", invoiceNo=" + invoiceNo + ", invoiceDate=" + invoiceDate + ", tradePrice=" + tradePrice + ", discount=" + discount + ", vat=" + vat + ", othDiscount=" + othDiscount + ", invoiceAmount=" + invoiceAmount + ", creator=" + creator + ", createdDate=" + createdDate + ", purcStatus=" + purcStatus + ", status=" + status + '}';
+        return "PhaPurInvoice{" + "phaInvId=" + phaInvId 
+                + ", supplierName=" + supplierName 
+                + ", invoiceNo=" + invoiceNo + ", invoiceDate=" + invoiceDate 
+                + ", tradePrice=" + tradePrice + ", discount=" + discount 
+                + ", vat=" + vat + ", othDiscount=" + othDiscount
+                + ", invoiceAmount=" + invoiceAmount + ", creator=" + creator 
+                + ", createdDate=" + createdDate 
+                + ", purcStatus=" + purcStatus 
+                + ", status=" + status + '}';
     }
 }

@@ -23,11 +23,11 @@
         <property name="purcStatus" column="purc_status" />     
         <property name="status" column="status" />  
         
-<!--        <set name="billItems" table="dia_billing_patient_service_bill_item"
+        <set name="detailses" table="inv_pha_invoice_details"
              cascade="save-update,merge,evict" lazy="false">
-            <key column="bill_id" />
-            <one-to-many	class="org.openmrs.module.hospitalcore.model.DiaPatientServiceBillItem" />
-        </set>      -->
+            <key column="inv_id" />
+            <one-to-many  class="org.openmrs.module.pharmacy.model.PhaPurInvoiceDetails" />
+        </set> 
            
     </class>
       

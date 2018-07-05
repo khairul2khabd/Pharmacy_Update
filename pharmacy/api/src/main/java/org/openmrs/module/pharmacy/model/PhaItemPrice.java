@@ -19,12 +19,12 @@ public class PhaItemPrice implements Serializable {
     private PhaPurInvoice phaInvId;
     private PhaItem item;
     private String batch;
-    private BigDecimal qty;
-    private BigDecimal free;
-    private BigDecimal unitTp;
-    private BigDecimal mrp;
-    private BigDecimal salesPrice;
-    private BigDecimal eachPrice;
+    private Double qty;
+    private Double free;
+    private Double unitTp;
+    private Double mrp;
+    private Double salesPrice;
+    private Double eachPrice;
     private Date expireDate;
     private Integer status;
 
@@ -60,51 +60,51 @@ public class PhaItemPrice implements Serializable {
         this.batch = batch;
     }
 
-    public BigDecimal getQty() {
+    public Double getQty() {
         return qty;
     }
 
-    public void setQty(BigDecimal qty) {
+    public void setQty(Double qty) {
         this.qty = qty;
     }
 
-    public BigDecimal getFree() {
+    public Double getFree() {
         return free;
     }
 
-    public void setFree(BigDecimal free) {
+    public void setFree(Double free) {
         this.free = free;
     }
 
-    public BigDecimal getUnitTp() {
+    public Double getUnitTp() {
         return unitTp;
     }
 
-    public void setUnitTp(BigDecimal unitTp) {
+    public void setUnitTp(Double unitTp) {
         this.unitTp = unitTp;
     }
 
-    public BigDecimal getMrp() {
+    public Double getMrp() {
         return mrp;
     }
 
-    public void setMrp(BigDecimal mrp) {
+    public void setMrp(Double mrp) {
         this.mrp = mrp;
     }
 
-    public BigDecimal getSalesPrice() {
+    public Double getSalesPrice() {
         return salesPrice;
     }
 
-    public void setSalesPrice(BigDecimal salesPrice) {
+    public void setSalesPrice(Double salesPrice) {
         this.salesPrice = salesPrice;
     }
 
-    public BigDecimal getEachPrice() {
+    public Double getEachPrice() {
         return eachPrice;
     }
 
-    public void setEachPrice(BigDecimal eachPrice) {
+    public void setEachPrice(Double eachPrice) {
         this.eachPrice = eachPrice;
     }
 

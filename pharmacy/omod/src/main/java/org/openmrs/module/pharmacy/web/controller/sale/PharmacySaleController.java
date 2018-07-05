@@ -62,7 +62,7 @@ public class PharmacySaleController {
             phaSale.setCreator(user.getUserId());
             phaSale.setPaidStaus(paidStatus);
             ps.savePhaSale(phaSale);
- 
+
             ObjectMapper mapper = new ObjectMapper();
             List<Map<String, String>> map = mapper.readValue(jsonList, new TypeReference<List<Map<String, String>>>() {
             });
@@ -91,7 +91,7 @@ public class PharmacySaleController {
                 ps.savePhaSaleDet(details);
 
                 PhaItemPrice itemPrice = ps.getPhaItemPriceById(Integer.parseInt(itemPriceId.toString()));
-                itemPrice.setQty(itemPrice.getQty().subtract(new BigDecimal(qty.toString())));
+                itemPrice.setQty(itemPrice.getQty() - (new Double(qty.toString())));
             }
 
             PhaSaleCollect collect = new PhaSaleCollect();

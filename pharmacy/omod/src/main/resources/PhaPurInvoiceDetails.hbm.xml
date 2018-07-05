@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.openmrs.module.pharmacy.model">
     
     <class name="PhaPurInvoiceDetails" table="inv_pha_invoice_details">
-        <id name="id" type="int" column="inv_det_id"
+        <id name="detId" type="int" column="inv_det_id"
             unsaved-value="0">
             <generator class="native" />
         </id>
@@ -19,7 +19,7 @@
         <property name="totalAmount" column="total_tp" />     
         <property name="vat" column="vat_per" />     
         <property name="vatAmount" column="vat_amount" />       
-        <property name="discount" column="discount_per" />     
+        <property name="dicount" column="discount_per" />     
         <property name="discountAmount" column="discount_amount" />     
         <property name="netAmount" column="net_amount" /> 
         
