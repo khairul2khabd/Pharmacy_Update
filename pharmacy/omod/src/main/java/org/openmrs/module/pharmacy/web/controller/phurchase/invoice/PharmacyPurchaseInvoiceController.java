@@ -8,6 +8,7 @@ package org.openmrs.module.pharmacy.web.controller.phurchase.invoice;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
+import java.util.ArrayList;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.pharmacy.api.PharmacyService;
 import org.openmrs.module.pharmacy.model.PhaPurInvoiceDetails;
@@ -115,94 +116,17 @@ public class PharmacyPurchaseInvoiceController {
     List<PhaPurInvoice> listpurinvoic() {
         PharmacyService ps = Context.getService(PharmacyService.class);
         List<PhaPurInvoice> list = ps.listPhaPurInvoiceDet();
-        return list;
+
+        List<PhaPurInvoice> invs = new ArrayList<PhaPurInvoice>();
+
+        for (PhaPurInvoice p : list) {
+            PhaPurInvoice pp = new PhaPurInvoice();
+            pp = p;
+            pp.setDetailses(null);
+            invs.add(pp);
+        }
+
+        return invs;
     }
 
 }
-
-//    @RequestMapping(value = "/module/pharmacy/savePurchaseInv.htm", method = RequestMethod.POST)
-//    public ResponseEntity<PhaPurInvoice> savepurchase(
-//            @RequestParam(value = "jsonList", required = false) String jsonList,
-//            @RequestBody PhaPurInvoice invoice) throws Exception {
-//        PharmacyService ps = Context.getService(PharmacyService.class);
-//        invoice.setCreator(Context.getAuthenticatedUser().getUserId());
-//        invoice.setCreatedDate(new Date());
-//        invoice.setStatus(0);
-//        ps.savePhaPur(invoice);
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//
-//        List<Map<String, String>> map = mapper.readValue(jsonList, new TypeReference<List<Map<String, String>>>() {
-//        });
-//
-//        for (Map<String, String> map1 : map) {
-//            Object itemName = map1.get("itemName");
-//            Object itemId = map1.get("itemId");
-//            Object batch = map1.get("batch");
-//            Object expire = map1.get("expire");
-//            Object pack = map1.get("pack");
-//            Object size = map1.get("size");
-//            Object qty = map1.get("qty");
-//            Object netQty = map1.get("netQty");
-//            Object free = map1.get("free");
-//            Object unitTP = map1.get("unitTP");
-//            Object totalAmount = map1.get("totalAmount");
-//            Object mrp = map1.get("mrp");
-//            Object salesPrice = map1.get("salesPrice");
-//            Object vat = map1.get("vat");
-//            Object vatAmount = map1.get("vatAmount");
-//            Object discount = map1.get("dicount");
-//            Object discountAmount = map1.get("discountAmount");
-//            Object netAmount = map1.get("netAmount");
-//
-//            Double net = new Double(netAmount.toString());
-//            Double quantity = new Double(qty.toString());
-//
-//            PhaItem item = ps.getPhaItemByName(itemName.toString().trim());
-//
-//            PhaPurInvoiceDetails details = new PhaPurInvoiceDetails();
-//            details.setPhaInvId(invoice);
-//            details.setItemName(itemName.toString().trim());
-//            details.setItem(item);
-//            details.setBatch(batch.toString());
-//            details.setPack(new Double(pack.toString()));
-//            details.setSize(new Double(size.toString()));
-//            details.setQty(quantity);
-//            details.setUnitTP(new Double(unitTP.toString()));
-//            details.setTotalAmount(new Double(totalAmount.toString()));
-//            details.setVat(new Double(vat.toString()));
-//            details.setVatAmount(new Double(vatAmount.toString()));
-//            details.setDiscount(new Double(discount.toString()));
-//            details.setDiscountAmount(new Double(discountAmount.toString()));
-//            details.setNetAmount(net);
-//            ps.savePhaPurDet(details);
-//
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//
-//            Date expDate = null;
-//            if (expire != null && expire != "") {
-//                String m = expire.toString().substring(0, expire.toString().indexOf("T") - 0);
-//                expDate = sdf.parse(m);
-//            }
-//
-//            BigDecimal salPrice = new BigDecimal(salesPrice.toString());
-//            BigDecimal _size = new BigDecimal(size.toString());
-//            BigDecimal _unitSale = salPrice.divide(_size);
-//
-//            //PhaItemPrice itemPrice = ps.getPhaItemPriceByItemId(item.getItemId());
-//            PhaItemPrice price = new PhaItemPrice();
-//            price.setPhaInvId(invoice);
-//            price.setItem(item);
-//            price.setBatch(batch.toString());
-//            price.setQty(new BigDecimal(netQty.toString()));
-//            price.setFree(new BigDecimal(free.toString()));
-//            price.setUnitTp(new BigDecimal(unitTP.toString()));
-//            price.setMrp(new BigDecimal(mrp.toString()));
-//            price.setSalesPrice(new BigDecimal(salesPrice.toString()));
-//            price.setEachPrice(_unitSale);
-//            price.setExpireDate(expDate);
-//            price.setStatus(0);
-//            ps.savePhaItemPrice(price);
-//        }
-//        return new ResponseEntity<PhaPurInvoice>(invoice, HttpStatus.OK);
-//    }
