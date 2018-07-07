@@ -5,11 +5,13 @@
  */
 package org.openmrs.module.pharmacy.web.controller.sale;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.pharmacy.api.PharmacyService;
+import org.openmrs.module.pharmacy.model.PhaItemPrice;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,7 +51,20 @@ public class PharmacySaleViewController {
     List<PhaSaleDetails> listPhaSaleDetailsByInvoiceId(@RequestParam(value = "saleInvoiceId", required = false) Integer saleInvoiceId) {
         PharmacyService ps = Context.getService(PharmacyService.class);
         List<PhaSaleDetails> detailses = ps.listPhaSaleDetByInvId(saleInvoiceId);
-        return detailses;
+
+        List<PhaSaleDetails> list = new ArrayList<PhaSaleDetails>();
+
+        for (PhaSaleDetails d : detailses) {
+            PhaSaleDetails dd = new PhaSaleDetails();
+            dd = d;
+            PhaItemPrice itemPrice = new PhaItemPrice();
+            itemPrice = dd.getItemPrice();
+            itemPrice.setPhaInvId(null);
+            dd.setItemPrice(itemPrice);
+            list.add(dd);
+        }
+
+        return list;
     }
 
     @RequestMapping(value = "/module/pharmacy/listPhaSaleCollectByInvoiceId.htm", method = RequestMethod.GET)
@@ -73,10 +88,15 @@ public class PharmacySaleViewController {
                 for (PhaSaleReturnDetails de : psr.getDetailses()) {
                     PhaSaleReturnDetails details = new PhaSaleReturnDetails();
                     details = de;
+                    PhaItemPrice itm = new PhaItemPrice();
+                    itm = details.getItemPrice();
+                    itm.setPhaInvId(null);
+
+                    details.setItemPrice(itm);
                     details.setPhaSaleReturn(null);
                     s.add(details);
                 }
-                
+
                 psr.setDetailses(s);
             }
         }

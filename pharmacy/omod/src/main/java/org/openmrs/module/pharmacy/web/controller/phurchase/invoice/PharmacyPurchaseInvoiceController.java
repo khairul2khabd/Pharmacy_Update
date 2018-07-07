@@ -5,10 +5,9 @@
  */
 package org.openmrs.module.pharmacy.web.controller.phurchase.invoice;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.pharmacy.api.PharmacyService;
 import org.openmrs.module.pharmacy.model.PhaPurInvoiceDetails;
@@ -20,15 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Date;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import org.openmrs.module.pharmacy.model.PhaItem;
 import org.openmrs.module.pharmacy.model.PhaItemPrice;
 import org.openmrs.module.pharmacy.model.PhaPurInvoice;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -41,7 +36,7 @@ public class PharmacyPurchaseInvoiceController {
     @RequestMapping(value = "/module/pharmacy/savePurchaseInv.htm", method = RequestMethod.POST)
     public ResponseEntity<PhaPurInvoice> savepurchase(@RequestBody PhaPurInvoice invoice) throws Exception {
         PharmacyService ps = Context.getService(PharmacyService.class);
-
+        DecimalFormat df = new DecimalFormat("0.00");
         try {
             invoice.setCreator(Context.getAuthenticatedUser().getUserId());
             invoice.setCreatedDate(new Date());
@@ -68,7 +63,7 @@ public class PharmacyPurchaseInvoiceController {
                     price.setUnitTp(d.getUnitTP());
                     price.setMrp(d.getMrp());
                     price.setSalesPrice(d.getSalesPrice());
-                    price.setEachPrice(_unitSale);
+                    price.setEachPrice(new Double(df.format(_unitSale)));
                     price.setExpireDate(d.getExpire());
                     price.setStatus(0);
                     ps.savePhaItemPrice(price);
